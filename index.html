@@ -302,19 +302,80 @@ const $=id=>document.getElementById(id);
 const todayStr=()=>new Date().toISOString().slice(0,10);
 const dateStr=()=>selectedDate;
 
-async function api(action,data={}){
-  const response=await fetch(API_URL,{
-    method:'POST',
-    redirect:'follow',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({token:API_TOKEN,action,data})
+// Apps Script Web App 不適合由 GitHub Pages 用 fetch 直接讀取回應。
+// 改用「跨網域表單 → 隱藏 iframe → postMessage」橋接，
+// 讓手機與電腦都能穩定傳送資料，同時保留 API 回覆。
+const apiPending=new Map();
+let apiBridgeFrame=null;
+
+function initApiBridge(){
+  if(apiBridgeFrame)return;
+  apiBridgeFrame=document.createElement('iframe');
+  apiBridgeFrame.name='haohaoApiBridgeFrame';
+  apiBridgeFrame.style.display='none';
+  document.body.appendChild(apiBridgeFrame);
+
+  window.addEventListener('message',function(event){
+    const msg=event.data;
+    if(!msg || msg.type!=='HAOHAO_API_RESPONSE')return;
+    const pending=apiPending.get(msg.requestId);
+    if(!pending)return;
+    apiPending.delete(msg.requestId);
+    if(msg.ok===false){
+      pending.reject(new Error(msg.error||'Apps Script API 錯誤'));
+      return;
+    }
+    pending.resolve(msg.result);
   });
-  const text=await response.text();
-  let result;
-  try{result=JSON.parse(text)}catch(e){throw new Error('Apps Script 回應格式錯誤：'+text.slice(0,200))}
-  if(result && result.ok===false && result.error)throw new Error(result.error);
-  return result;
 }
+
+function api(action,data={}){
+  initApiBridge();
+  return new Promise(function(resolve,reject){
+    const requestId='r_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+    apiPending.set(requestId,{resolve,reject});
+
+    const form=document.createElement('form');
+    form.method='POST';
+    form.action=API_URL;
+    form.target='haohaoApiBridgeFrame';
+    form.style.display='none';
+
+    const input=document.createElement('input');
+    input.type='hidden';
+    input.name='payload';
+    input.value=JSON.stringify({
+      token:API_TOKEN,
+      action:action,
+      data:data,
+      transport:'iframe',
+      requestId:requestId
+    });
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    const timeout=setTimeout(function(){
+      if(apiPending.has(requestId)){
+        apiPending.delete(requestId);
+        reject(new Error('連線逾時，請再試一次'));
+      }
+      form.remove();
+    },30000);
+
+    const originalResolve=resolve;
+    const originalReject=reject;
+    apiPending.set(requestId,{
+      resolve:function(v){clearTimeout(timeout);form.remove();originalResolve(v)},
+      reject:function(e){clearTimeout(timeout);form.remove();originalReject(e)}
+    });
+
+    form.submit();
+  });
+}
+
+initApiBridge();
+
 
 function go(page){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
