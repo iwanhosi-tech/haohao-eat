@@ -33,54 +33,22 @@ textarea,input,select{width:100%;min-height:50px;padding:11px 12px;border:1px so
 .profile-card{background:linear-gradient(135deg,#FFF7F1,#F4F8FF);border-radius:18px;padding:14px}.tag{display:inline-block;padding:7px 10px;border-radius:999px;background:#fff;margin:4px 3px;font-size:12px}.ai-choice{padding:12px;border:1px solid #EEE6E0;border-radius:16px;background:#fff;margin:8px 0}
 .home-actions{display:grid;grid-template-columns:1.35fr 1fr;gap:9px;margin:10px 0}.action-card{border:0;border-radius:18px;padding:15px;text-align:left;min-height:92px;cursor:pointer;box-shadow:var(--shadow)}.action-card.primary{background:linear-gradient(135deg,#F5B9C7,#FFD8C8)}.action-card.secondary{background:#FFF}.action-card .ai{font-size:23px;display:block;margin-bottom:6px}.action-card b{font-size:15px}.action-card small{display:block;color:#766C66;margin-top:4px}
 .home-summary{display:flex;align-items:center;justify-content:space-between;gap:12px}.home-summary .range{font-size:25px}.home-summary .mini{font-size:12px;color:var(--muted)}
-/* V7.2 響應式版：同一份 Index.html 自動適應手機／平板／電腦 */
-@media (min-width:600px){
-  body{padding:0;background:var(--bg)}
-  .app{
-    width:100%;
-    max-width:none;
-    margin:0;
-    border-radius:0;
-    box-shadow:none;
-    overflow:visible;
-  }
-  .bottom{
-    left:0;
-    transform:none;
-    width:100%;
-    max-width:none;
-  }
-}
+@media (min-width:600px){body{padding:0;background:var(--bg)}.app{width:100%;max-width:none;margin:0;border-radius:0;box-shadow:none;overflow:visible}.bottom{left:0;transform:none;width:100%;max-width:none}}
 
-@media (max-width:599px){
-  html{font-size:18px}
-  body{
-    width:100%;
-    min-width:0;
-    overflow-x:hidden;
-  }
-  .app{
-    width:100%;
-    max-width:none;
-    min-width:0;
-    min-height:100svh;
-    margin:0;
-  }
-  header{padding-left:16px;padding-right:16px}
-  h1{font-size:31px}
-  .sub{font-size:18px}
-  .page{padding:10px 12px 18px}
-  .card{padding:17px;font-size:17px}
-  .card h2{font-size:23px}
-  .big-btn{font-size:19px}
-  .small-btn{font-size:18px}
-  .mode-btn b{font-size:17px}
-  .mode-btn span{font-size:14px}
-  .action-card b{font-size:18px}
-  .action-card small{font-size:14px}
-  .chat{font-size:17px}
-  .msg{font-size:17px}
-  input,select,textarea{font-size:17px}
+@media (max-width:480px){
+  h1{font-size:33px}
+  .sub{font-size:19px}
+  .card{padding:18px;font-size:18px}
+  .card h2{font-size:25px}
+  .big-btn{font-size:21px}
+  .small-btn{font-size:20px}
+  .mode-btn b{font-size:18px}
+  .mode-btn span{font-size:15px}
+  .action-card b{font-size:19px}
+  .action-card small{font-size:15px}
+  .chat{font-size:18px}
+  .msg{font-size:18px}
+  input,select,textarea{font-size:18px}
 }
 </style>
 </head>
@@ -165,7 +133,7 @@ textarea,input,select{width:100%;min-height:50px;padding:11px 12px;border:1px so
   </div>
 </section>
 
-<section id="record" class="page"> <div class="card"> <h2>🍽️ 記錄這一餐</h2> <div class="muted" style="margin-bottom:12px">不用一定拍照。想打字記錄也可以，吃了什麼就記什麼。</div> <select id="meal"><option>早餐</option><option>午餐</option><option>晚餐</option><option>點心</option><option>其他</option></select> <div style="height:12px"></div> <div class="row"><button class="small-btn active" id="photoModeBtn" onclick="showRecordMode('photo')">📸 拍照記錄</button><button class="small-btn" id="manualModeBtn" onclick="showRecordMode('manual')">✍️ 手寫記錄</button></div> <div id="photoRecordBox"><div style="height:12px"></div><div class="photo-box"><div>拍一張照片，AI 幫你先估看看 👀</div><input id="photo" type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)" style="margin-top:12px"><img id="preview"></div><div style="height:12px"></div><button class="big-btn" onclick="analyzePhoto()">🤖 AI 分析餐點</button></div> <div id="manualRecordBox" style="display:none"><div style="height:12px"></div><label><b>今天吃了什麼？</b></label><textarea id="manualFood" placeholder="例如：炸雞便當、白飯、滷蛋、青菜"></textarea><div style="height:10px"></div><label><b>大概份量</b></label><input id="manualPortion" placeholder="例如：1個便當、1碗、2塊，可不填"><div style="height:10px"></div><div class="muted">熱量與營養可以先不填。單純記錄也可以，之後再讓阿鬧陪你看。</div><div style="height:12px"></div><button class="big-btn" onclick="saveManualFood()">✍️ 儲存這筆餐食</button></div> <div id="recordStatus" class="muted" style="margin-top:10px"></div> </div> </section>
+<section id="record" class="page"> <div class="card"> <h2>🍽️ 記錄這一餐</h2> <div class="muted" style="margin-bottom:12px">不用一定拍照。想打字記錄也可以，吃了什麼就記什麼。</div> <label for="recordDate"><b>📅 記錄日期</b></label><input id="recordDate" type="date" style="margin-top:8px" aria-label="記錄日期"><div class="muted" style="margin-top:6px">可以補記以前的餐食；預設是今天。</div><div style="height:12px"></div><select id="meal"><option>早餐</option><option>午餐</option><option>晚餐</option><option>點心</option><option>其他</option></select> <div style="height:12px"></div> <div class="row"><button class="small-btn active" id="photoModeBtn" onclick="showRecordMode('photo')">📸 拍照記錄</button><button class="small-btn" id="manualModeBtn" onclick="showRecordMode('manual')">✍️ 手寫記錄</button></div> <div id="photoRecordBox"><div style="height:12px"></div><div class="photo-box"><div>拍一張照片，AI 幫你先估看看 👀</div><input id="photo" type="file" accept="image/*" capture="environment" onchange="previewPhoto(event)" style="margin-top:12px"><img id="preview"></div><div style="height:12px"></div><button class="big-btn" onclick="analyzePhoto()">🤖 AI 分析餐點</button></div> <div id="manualRecordBox" style="display:none"><div style="height:12px"></div><label><b>今天吃了什麼？</b></label><textarea id="manualFood" placeholder="例如：炸雞便當、白飯、滷蛋、青菜"></textarea><div style="height:10px"></div><label><b>大概份量</b></label><input id="manualPortion" placeholder="例如：1個便當、1碗、2塊，可不填"><div style="height:10px"></div><div class="muted">熱量與營養可以先不填。單純記錄也可以，之後再讓阿鬧陪你看。</div><div style="height:12px"></div><button class="big-btn" onclick="saveManualFood()">✍️ 儲存這筆餐食</button></div> <div id="recordStatus" class="muted" style="margin-top:10px"></div> </div> </section>
 
 <section id="result" class="page">
   <div class="card">
@@ -273,7 +241,10 @@ textarea,input,select{width:100%;min-height:50px;padding:11px 12px;border:1px so
 let currentResult = null;
 let currentPhotoData = null;
 const $ = id => document.getElementById(id);
-const dateStr = () => new Date().toISOString().slice(0,10);
+const dateStr = () => { const d=new Date(); const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; };
+const recordDateStr = () => $('recordDate')?.value || dateStr();
+function initRecordDate(){ const x=$('recordDate'); if(!x)return; x.value=dateStr(); x.max=dateStr(); }
+initRecordDate();
 
 function go(page){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
@@ -296,13 +267,15 @@ function previewPhoto(e){
 }
 
 function showRecordMode(mode){$('photoRecordBox').style.display=mode==='photo'?'block':'none';$('manualRecordBox').style.display=mode==='manual'?'block':'none';$('photoModeBtn').classList.toggle('active',mode==='photo');$('manualModeBtn').classList.toggle('active',mode==='manual');$('recordStatus').textContent='';}
-function saveManualFood(){const foodText=$('manualFood').value.trim();const portion=$('manualPortion').value.trim()||'未填份量';if(!foodText){toast('先寫下吃了什麼就好 😊');$('manualFood').focus();return;}const names=foodText.split(/[、,，\n]+/).map(x=>x.trim()).filter(Boolean);const result={date:dateStr(),meal:$('meal').value,foods:names.map(name=>({name,portion})),calorie_min:0,calorie_max:0,protein_g:0,carb_g:0,fat_g:0,vegetable_score:0,confidence:'low',note:'這筆是手寫餐食紀錄，尚未進行熱量與營養估算。之後可以再補充或詢問阿鬧。',clarification:[]};google.script.run.withSuccessHandler(()=>{toast('已記下來 🌷');loadToday();go('home');}).withFailureHandler(err=>toast(err.message)).saveFood(result);}
+function saveManualFood(){const foodText=$('manualFood').value.trim();const portion=$('manualPortion').value.trim()||'未填份量';const selectedDate=recordDateStr();if(!foodText){toast('先寫下吃了什麼就好 😊');$('manualFood').focus();return;}const names=foodText.split(/[、,，\n]+/).map(x=>x.trim()).filter(Boolean);const result={date:selectedDate,meal:$('meal').value,foods:names.map(name=>({name,portion})),calorie_min:0,calorie_max:0,protein_g:0,carb_g:0,fat_g:0,vegetable_score:0,confidence:'low',note:'這筆是手寫餐食紀錄，尚未進行熱量與營養估算。之後可以再補充或詢問阿鬧。',clarification:[]};google.script.run.withSuccessHandler(()=>{toast(selectedDate===dateStr()?'已記下來 🌷':'已補記 '+selectedDate+' 🌷');loadToday();go('home');}).withFailureHandler(err=>toast(err.message)).saveFood(result);}
 function analyzePhoto(){
   if(!currentPhotoData){toast('先選一張照片喔～');return;}
   $('recordStatus').textContent='AI 正在看照片……';
   const meal=$('meal').value;
+  const selectedDate=recordDateStr();
   google.script.run.withSuccessHandler(res=>{
     currentResult=res.result;
+    currentResult.date=selectedDate;
     renderResult(currentResult);
     $('recordStatus').textContent='';
     go('result');
@@ -312,8 +285,8 @@ function analyzePhoto(){
   }).analyzePhoto({
     imageDataUrl:currentPhotoData,
     meal,
-    date:dateStr(),
-    fileName:'food_'+Date.now()+'.jpg'
+    date:selectedDate,
+    fileName:'food_'+selectedDate+'_'+Date.now()+'.jpg'
   });
 }
 
@@ -334,7 +307,7 @@ function renderResult(r){
 function saveResult(){
   if(!currentResult){return;}
   google.script.run.withSuccessHandler(()=>{
-    toast('已加入今天飲食 🌷');
+    toast(currentResult.date===dateStr()?'已加入今天飲食 🌷':'已加入 '+currentResult.date+' 的飲食 🌷');
     loadToday();
     go('home');
   }).withFailureHandler(err=>toast(err.message)).saveFood(currentResult);
